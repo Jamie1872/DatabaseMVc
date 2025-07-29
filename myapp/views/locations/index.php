@@ -1,5 +1,5 @@
 <h1>All Locations</h1>
-<a href="/myapp/public/index.php?action=location_create">+ Add New Location</a>
+<a href="index.php?action=location_create">+ Add New Location</a>
 <table border="1">
     <tr>
         <th>ID</th>
@@ -27,12 +27,12 @@
             <td><?= htmlspecialchars($loc['email']) ?></td>
             <td><?= htmlspecialchars($loc['max_capacity']) ?></td>
             <td>
-                <a href="/myapp/public/index.php?action=location_edit&id=<?= $loc['location_id'] ?>">Edit</a>
-                <a href="/myapp/public/index.php?action=location_delete&id=<?= $loc['location_id'] ?>">Delete</a>
+                <a href="index.php?action=location_edit&id=<?= $loc['location_id'] ?>">Edit</a>
+                <a href="index.php?action=location_delete&id=<?= $loc['location_id'] ?>">Delete</a>
             </td>
         </tr>
     <?php endforeach; ?>
 
 </table>
 <br>
-<a href="/myapp/public/index.php" style="display: inline-block; margin-bottom: 10px; padding: 8px 12px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 4px;">Go Back</a>
+<a href="index.php" style="display: inline-block; margin-bottom: 10px; padding: 8px 12px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 4px;">Go Back</a>

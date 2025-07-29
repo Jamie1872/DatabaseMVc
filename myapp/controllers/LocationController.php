@@ -10,7 +10,7 @@ class LocationController {
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Location::create($_POST);
-            header("Location: /myapp/public/index.php?action=location_display");
+            header("Location: index.php?action=location_display");
             exit;
         }
         require_once __DIR__ . '/../views/locations/create.php';
@@ -19,7 +19,7 @@ class LocationController {
     public function edit() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Location::update($_POST);
-            header("Location: /myapp/public/index.php?action=location_display");
+            header("Location: index.php?action=location_display");
             exit;
         }
 
@@ -29,7 +29,7 @@ class LocationController {
 
     public function delete() {
         Location::delete($_GET['id']);
-        header("Location: /myapp/public/index.php?action=location_display");
+        header("Location: index.php?action=location_display");
         exit;
     }
 }

@@ -1,6 +1,6 @@
 <h1>Edit Club Member</h1>
 
-<form method="POST" action="/myapp/public/index.php?action=clubmember_edit&id=<?= $member['club_member_id'] ?>">
+<form method="POST" action="index.php?action=clubmember_edit&id=<?= $member['club_member_id'] ?>">
     <label>First Name: <input type="text" name="first_name" value="<?= htmlspecialchars($member['first_name']) ?>" required></label><br>
     <label>Last Name: <input type="text" name="last_name" value="<?= htmlspecialchars($member['last_name']) ?>" required></label><br>
     <label>Date of Birth: <input type="date" name="date_of_birth" value="<?= htmlspecialchars($member['date_of_birth']) ?>" required></label><br>
@@ -17,4 +17,4 @@
     <button type="submit">Update</button>
 </form>
 
-<a href="/myapp/public/index.php?action=clubmember_index">Back to list</a>
+<a href="index.php?action=clubmember_index">Back to list</a>

@@ -1,5 +1,5 @@
 <h1>Edit Location</h1>
-<form action="/myapp/public/index.php?action=location_edit" method="POST">
+<form action="ndex.php?action=location_edit" method="POST">
     <input type="hidden" name="id" value="<?= $location['location_id'] ?>">
     Name: <input name="name" value="<?= $location['name'] ?>"><br>
     Type: <select name="type">
@@ -16,4 +16,4 @@
     <button type="submit">Update</button>
 </form>
 
-<a href="/myapp/public/index.php?action=location_display">Back to list</a>
+<a href="index.php?action=location_display">Back to list</a>

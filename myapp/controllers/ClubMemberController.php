@@ -10,7 +10,7 @@ class ClubMemberController {
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = ClubMember::create($_POST);
-            header('Location: /myapp/public/index.php?action=clubmember_index');
+            header('Location: index.php?action=clubmember_index');
             exit;
         } else {
             include __DIR__ . '/../views/clubmember/create.php';
@@ -20,17 +20,17 @@ class ClubMemberController {
     public function edit() {
         $id = $_GET['id'] ?? null;
         if (!$id) {
-            header('Location: /myapp/public/index.php?action=clubmember_index');
+            header('Location: index.php?action=clubmember_index');
             exit;
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ClubMember::update($id, $_POST);
-            header('Location: /myapp/public/index.php?action=clubmember_index');
+            header('Location: index.php?action=clubmember_index');
             exit;
         } else {
             $member = ClubMember::find($id);
             if (!$member) {
-                header('Location: /myapp/public/index.php?action=clubmember_index');
+                header('Location: index.php?action=clubmember_index');
                 exit;
             }
             include __DIR__ . '/../views/clubmember/edit.php';
@@ -42,7 +42,7 @@ class ClubMemberController {
         if ($id) {
             ClubMember::delete($id);
         }
-        header('Location: /myapp/public/index.php?action=clubmember_index');
+        header('Location: index.php?action=clubmember_index');
         exit;
     }
 }

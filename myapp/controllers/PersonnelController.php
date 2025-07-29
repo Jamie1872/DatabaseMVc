@@ -17,7 +17,7 @@ class PersonnelController {
             Personnel::addLocationHistory($personnel_id, $_POST['location_id'], $_POST['start_date']);
         }
 
-        header("Location: /myapp/public/index.php?action=personnel_display");
+        header("Location: index.php?action=personnel_display");
         exit;
     } else {
         include __DIR__ . '/../views/personnel/create.php';
@@ -27,7 +27,7 @@ class PersonnelController {
 public function edit() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         Personnel::update($_POST);
-        header("Location: /myapp/public/index.php?action=personnel_display");
+        header("Location: index.php?action=personnel_display");
         exit;
     } else {
         $id = $_GET['id'] ?? null;
@@ -45,7 +45,7 @@ public function delete() {
     if ($id) {
         Personnel::delete($id);
     }
-    header("Location: /myapp/public/index.php?action=personnel_display");
+    header("Location: index.php?action=personnel_display");
     exit;
 }
 }

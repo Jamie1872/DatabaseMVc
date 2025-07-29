@@ -1,5 +1,5 @@
 <h1>Add Location</h1>
-<form action="/myapp/public/index.php?action=location_create" method="POST">
+<form action="index.php?action=location_create" method="POST">
     Name: <input name="name"><br>
     Type: <select name="type"><option value="Head">Head</option><option value="Branch">Branch</option></select><br>
     Address: <input name="address"><br>
