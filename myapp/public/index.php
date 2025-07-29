@@ -20,6 +20,7 @@ switch ($action) {
     case 'location_create':  $controller->create(); break;
     case 'location_edit':    $controller->edit(); break;
     case 'location_delete':  $controller->delete(); break;
+    case 'location_full_details': $controller->fullDetails(); break;
     case 'personnel_display': $personnelController->display(); break;
     case 'personnel_create':  $personnelController->create(); break;
     case 'personnel_edit':    $personnelController->edit(); break;
