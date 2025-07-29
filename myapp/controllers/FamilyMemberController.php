@@ -8,14 +8,22 @@ class FamilyMemberController {
     }
 
     public function create() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            FamilyMember::create($_POST);
-            header("Location: index.php?action=familymember_index");
-            exit;
-        } else {
-            include __DIR__ . '/../views/familymember/create.php';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // 1. Create FamilyMember
+        $family_member_id = FamilyMember::create($_POST);
+
+        // 2. Create FamilyMember-Location association (if location selected)
+        if ($family_member_id && !empty($_POST['location_id']) && !empty($_POST['start_date'])) {
+            $end_date = !empty($_POST['end_date']) ? $_POST['end_date'] : null;
+            FamilyMember::addLocationHistory($family_member_id, $_POST['location_id'], $_POST['start_date'], $end_date);
         }
+
+        header("Location: index.php?action=familymember_index");
+        exit;
     }
+    include __DIR__ . '/../views/familymember/create.php';
+}
+
 
     public function edit() {
         $id = $_GET['id'] ?? null;

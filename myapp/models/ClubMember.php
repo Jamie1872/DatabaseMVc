@@ -30,6 +30,20 @@ class ClubMember {
         return $db->lastInsertId();
     }
 
+public static function addLocationHistory($club_member_id, $location_id, $start_date, $end_date) {
+    try {
+        $db = Database::connect();
+        $stmt = $db->prepare("
+            INSERT INTO ClubMember_Location_History (club_member_id, location_id, start_date, end_date)
+            VALUES (?, ?, ?, ?)
+        ");
+        $stmt->execute([$club_member_id, $location_id, $start_date, $end_date]);
+    } catch (PDOException $e) {
+        die("Error inserting into ClubMember_Location_History: " . $e->getMessage());
+    }
+}
+
+
     public static function update($id, $data) {
         $db = Database::connect();
         $stmt = $db->prepare("UPDATE ClubMembers SET

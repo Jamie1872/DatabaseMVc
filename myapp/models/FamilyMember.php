@@ -28,6 +28,16 @@ class FamilyMember {
         return $db->lastInsertId();
     }
 
+    public static function addLocationHistory($family_member_id, $location_id, $start_date, $end_date) {
+    $db = Database::connect();
+    $stmt = $db->prepare("
+        INSERT INTO FamilyMember_Location_History (family_member_id, location_id, start_date, end_date)
+        VALUES (?, ?, ?, ?)
+    ");
+    $stmt->execute([$family_member_id, $location_id, $start_date, $end_date]);
+}
+
+
     public static function update($id, $data) {
         $db = Database::connect();
         $stmt = $db->prepare("UPDATE FamilyMembers SET
