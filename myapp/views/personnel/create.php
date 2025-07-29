@@ -6,7 +6,7 @@ $locations = Location::all();
 
 <h1>Add New Personnel</h1>
 
-<form action="/myapp/public/index.php?action=personnel_create" method="POST">
+<form action="index.php?action=personnel_create" method="POST">
     <label>First Name: <input type="text" name="first_name" required></label><br>
     <label>Last Name: <input type="text" name="last_name" required></label><br>
     <label>Date of Birth: <input type="date" name="date_of_birth"></label><br>
@@ -50,4 +50,4 @@ $locations = Location::all();
     <button type="submit">Create</button>
 </form>
 
-<a href="/myapp/public/index.php?action=personnel_display">Back to list</a>
+<a href="index.php?action=personnel_display">Back to list</a>
