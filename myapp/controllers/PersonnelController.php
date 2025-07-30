@@ -48,4 +48,9 @@ public function delete() {
     header("Location: index.php?action=personnel_display");
     exit;
 }
+#query 19
+public function showVolunteerFamilyOfMinors() {
+    $volunteers = Personnel::getVolunteerFamilyOfMinors();
+    include __DIR__ . '/../views/personnel/volunteer_family_minors_report.php';
+}
 }

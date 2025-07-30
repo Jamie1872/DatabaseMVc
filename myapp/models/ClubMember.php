@@ -50,4 +50,98 @@ class ClubMember {
         $stmt = $db->prepare("DELETE FROM ClubMembers WHERE club_member_id = ?");
         return $stmt->execute([$id]);
     }
+    #query 16
+     public static function getMembersWithAllRoles() {
+        $db = Database::connect();
+        $sql = "
+            SELECT 
+                cm.club_member_id,
+                cm.first_name,
+                cm.last_name,
+                TIMESTAMPDIFF(YEAR, cm.date_of_birth, CURDATE()) AS age,
+                cm.phone_number,
+                cm.email,
+                l.name AS location_name
+            FROM 
+                ClubMembers cm,
+                Session_Player_Assignment spa,
+                ClubMember_Location_History clh,
+                Locations l
+            WHERE 
+                cm.club_member_id = spa.club_member_id
+                AND cm.club_member_id = clh.club_member_id
+                AND clh.end_date IS NULL
+                AND clh.location_id = l.location_id
+            GROUP BY 
+                cm.club_member_id
+            HAVING 
+                SUM(spa.role = 'Goalkeeper') > 0
+                AND SUM(spa.role = 'Defender') > 0
+                AND SUM(spa.role = 'Midfielder') > 0
+                AND SUM(spa.role = 'Forward') > 0
+            ORDER BY 
+                location_name ASC,
+                cm.club_member_id ASC
+        ";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    #query 18
+  public static function getUndefeatedActiveMembers() {
+    $db = Database::connect();
+    $sql = "
+        SELECT 
+            cm.club_member_id,
+            cm.first_name,
+            cm.last_name,
+            TIMESTAMPDIFF(YEAR, cm.date_of_birth, CURDATE()) AS age,
+            cm.phone_number,
+            cm.email,
+            l.name AS location_name
+        FROM 
+            ClubMembers cm
+        JOIN ClubMember_Location_History clh ON cm.club_member_id = clh.club_member_id AND clh.end_date IS NULL
+        JOIN Locations l ON clh.location_id = l.location_id
+        JOIN TeamFormation tf ON cm.club_member_id = tf.club_member_id
+        JOIN Session_Player_Assignment spa ON cm.club_member_id = spa.club_member_id
+        JOIN Sessions s ON spa.session_id = s.session_id
+        WHERE 
+            s.session_type = 'Game'
+            AND s.team1_score IS NOT NULL AND s.team2_score IS NOT NULL
+            AND (
+                (tf.team_id = s.team1_id AND s.team1_score > s.team2_score)
+                OR
+                (tf.team_id = s.team2_id AND s.team2_score > s.team1_score)
+            )
+            AND NOT EXISTS (
+                SELECT 1
+                FROM TeamFormation tf2
+                JOIN Session_Player_Assignment spa2 ON tf2.club_member_id = spa2.club_member_id
+                JOIN Sessions s2 ON spa2.session_id = s2.session_id
+                WHERE 
+                    tf2.club_member_id = cm.club_member_id
+                    AND s2.session_type = 'Game'
+                    AND s2.team1_score IS NOT NULL AND s2.team2_score IS NOT NULL
+                    AND (
+                        (tf2.team_id = s2.team1_id AND s2.team1_score < s2.team2_score)
+                        OR
+                        (tf2.team_id = s2.team2_id AND s2.team2_score < s2.team1_score)
+                    )
+            )
+        GROUP BY 
+            cm.club_member_id
+        ORDER BY 
+            location_name ASC,
+            cm.club_member_id ASC
+    ";
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+  
+
 }

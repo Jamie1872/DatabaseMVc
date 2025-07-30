@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once __DIR__ . '/../models/ClubMember.php';
 
 class ClubMemberController {
@@ -45,4 +48,16 @@ class ClubMemberController {
         header('Location: index.php?action=clubmember_index');
         exit;
     }
+# query 16
+    public function showRoleCompleteMembers() {
+    $members = ClubMember::getMembersWithAllRoles();
+    include __DIR__ . '/../views/clubmember/role_complete_report.php';
+}
+
+#query 18
+public function showUndefeatedMembers() {
+    $members = ClubMember::getUndefeatedActiveMembers();
+    include __DIR__ . '/../views/clubmember/undefeated_report.php';
+}
+
 }
