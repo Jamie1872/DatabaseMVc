@@ -11,14 +11,23 @@ class ClubMemberController {
     }
 
     public function create() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = ClubMember::create($_POST);
-            header('Location: index.php?action=clubmember_index');
-            exit;
-        } else {
-            include __DIR__ . '/../views/clubmember/create.php';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // 1. Create club member first
+        $club_member_id = ClubMember::create($_POST); 
+
+        // 2. Add location history
+        if ($club_member_id && !empty($_POST['location_id']) && !empty($_POST['start_date'])) {
+            $end_date = !empty($_POST['end_date']) ? $_POST['end_date'] : null;
+            ClubMember::addLocationHistory($club_member_id, $_POST['location_id'], $_POST['start_date'], $end_date);
         }
+
+        header("Location: index.php?action=clubmember_index");
+        exit;
+    } else {
+        include __DIR__ . '/../views/clubmember/create.php';
     }
+}
+
 
     public function edit() {
         $id = $_GET['id'] ?? null;

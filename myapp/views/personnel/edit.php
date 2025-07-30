@@ -1,6 +1,6 @@
 <h1>Edit Personnel</h1>
 
-<form action="/myapp/public/index.php?action=personnel_edit" method="POST">
+<form action="index.php?action=personnel_edit" method="POST">
     <input type="hidden" name="id" value="<?= htmlspecialchars($person['personnel_id']) ?>">
 
     <label>First Name: <input type="text" name="first_name" value="<?= htmlspecialchars($person['first_name']) ?>" required></label><br>
@@ -35,4 +35,4 @@
     <button type="submit">Update</button>
 </form>
 
-<a href="/myapp/public/index.php?action=personnel_display">Back to list</a>
+<a href="index.php?action=personnel_display">Back to list</a>

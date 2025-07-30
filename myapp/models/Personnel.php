@@ -30,10 +30,10 @@ class Personnel {
         return $db->lastInsertId();
     }
 
-    public static function addLocationHistory($personnel_id, $location_id, $start_date) {
+    public static function addLocationHistory($personnel_id, $location_id, $start_date, $end_date) {
         $db = Database::connect();
-        $stmt = $db->prepare("INSERT INTO Personnel_Location_History (personnel_id, location_id, start_date) VALUES (?, ?, ?)");
-        $stmt->execute([$personnel_id, $location_id, $start_date]);
+        $stmt = $db->prepare("INSERT INTO Personnel_Location_History (personnel_id, location_id, start_date, end_date) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$personnel_id, $location_id, $start_date, $end_date]);
     }
 
 

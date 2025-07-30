@@ -4,11 +4,13 @@ require_once __DIR__ . '/../controllers/LocationController.php';
 require_once __DIR__ . '/../controllers/PersonnelController.php';
 require_once __DIR__ . '/../controllers/ClubMemberController.php';
 require_once __DIR__ . '/../controllers/FamilyMemberController.php';
+require_once __DIR__ . '/../controllers/SecondaryFamilyController.php';
 // Add other controllers here...
 $controller = new LocationController();
 $personnelController = new PersonnelController();
 $clubMemberController = new ClubMemberController();
 $familyMemberController = new FamilyMemberController();
+$secondaryFamilyController = new SecondaryFamilyController();
 
 $action = $_GET['action'] ?? 'home';
 
@@ -36,6 +38,10 @@ switch ($action) {
     case 'headcoach_familymembers_report': $familyMemberController->showHeadCoachFamilyMembers(); break;
     case 'undefeated_report':$clubMemberController->showUndefeatedMembers();break;
     case 'volunteer_family_minors_report': $personnelController->showVolunteerFamilyOfMinors(); break;
+    case 'secondaryfamily_index':     $secondaryFamilyController->index();    break;
+    case 'secondaryfamily_create':     $secondaryFamilyController->create();     break;
+    case 'secondaryfamily_edit':     $secondaryFamilyController->edit();    break;
+    case 'secondaryfamily_delete':    $secondaryFamilyController->delete();    break;
 
     default: echo "Unknown action.";
 }

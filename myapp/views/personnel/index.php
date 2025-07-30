@@ -1,5 +1,5 @@
 <h1>All Personnel</h1>
-<a href="/myapp/public/index.php?action=personnel_create">+ Add New Personnel</a>
+<a href="index.php?action=personnel_create">+ Add New Personnel</a>
 <table border="1">
     <tr>
         <th>ID</th>
@@ -35,12 +35,12 @@
             <td><?= htmlspecialchars($p['role']) ?></td>
             <td><?= htmlspecialchars($p['mandate']) ?></td>
             <td>
-                <a href="/myapp/public/index.php?action=personnel_edit&id=<?= $p['personnel_id'] ?>">Edit</a>
+                <a href="index.php?action=personnel_edit&id=<?= $p['personnel_id'] ?>">Edit</a>
                 <!-- <a href="/myapp/public/index.php?action=personnel_delete&id=<?= $p['personnel_id'] ?>" onclick="return confirm('Delete?')">Delete</a> -->
-                <a href="/myapp/public/index.php?action=personnel_delete&id=<?= $p['personnel_id'] ?>">Delete</a>
+                <a href="index.php?action=personnel_delete&id=<?= $p['personnel_id'] ?>">Delete</a>
             </td>
         </tr>
     <?php endforeach; ?>
 </table>
 <br>
-<a href="/myapp/public/index.php" style="display: inline-block; margin-bottom: 10px; padding: 8px 12px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 4px;">Go Back</a>
+<a href="index.php" style="display: inline-block; margin-bottom: 10px; padding: 8px 12px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 4px;">Go Back</a>

@@ -6,7 +6,7 @@ $locations = Location::all();
 
 <h1>Add New Personnel</h1>
 
-<form action="/myapp/public/index.php?action=personnel_create" method="POST">
+<form action="index.php?action=personnel_create" method="POST">
     <label>First Name: <input type="text" name="first_name" required></label><br>
     <label>Last Name: <input type="text" name="last_name" required></label><br>
     <label>Date of Birth: <input type="date" name="date_of_birth"></label><br>
@@ -45,9 +45,11 @@ $locations = Location::all();
     </select><br>
 
     <label for="start_date">Start Date:</label>
-    <input type="date" name="start_date" id="start_date" required><br><br><br>
+    <input type="date" name="start_date" id="start_date" required>
+    <label for="end_date">End Date:</label>
+    <input type="date" name="end_date" id="end_date"><br><br><br>
 
     <button type="submit">Create</button>
 </form>
 
-<a href="/myapp/public/index.php?action=personnel_display">Back to list</a>
+<a href="index.php?action=personnel_display">Back to list</a>

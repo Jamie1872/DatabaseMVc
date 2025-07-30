@@ -7,14 +7,17 @@ class PersonnelController {
         include __DIR__ . '/../views/personnel/index.php';
     }
 
-    public function create() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+public function create() {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Create personnel first
         $personnel_id = Personnel::create($_POST); // Modify create() to return inserted ID
 
         // Then create personnel-location association
         if ($personnel_id && !empty($_POST['location_id']) && !empty($_POST['start_date'])) {
-            Personnel::addLocationHistory($personnel_id, $_POST['location_id'], $_POST['start_date']);
+            // Handle optional end_date
+            $end_date = !empty($_POST['end_date']) ? $_POST['end_date'] : null;
+
+            Personnel::addLocationHistory($personnel_id, $_POST['location_id'], $_POST['start_date'], $end_date);
         }
 
         header("Location: index.php?action=personnel_display");
@@ -23,6 +26,7 @@ class PersonnelController {
         include __DIR__ . '/../views/personnel/create.php';
     }
 }
+
 
 public function edit() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
