@@ -41,3 +41,5 @@ $coaches = Personnel::getCoaches(); // Only get personnel with role 'Coach'
 
     <button type="submit">Create Team</button>
 </form>
+
+<a href="index.php?action=team_index">Back to list</a>

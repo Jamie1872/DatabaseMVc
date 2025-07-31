@@ -37,3 +37,4 @@
 
     <button type="submit">Update Team</button>
 </form>
+<a href="index.php?action=team_index">Cancel</a>
