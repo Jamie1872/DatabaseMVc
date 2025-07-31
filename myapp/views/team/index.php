@@ -17,7 +17,7 @@
             <td><?= htmlspecialchars($team['location_name']) ?></td>
             <td>
                 <a href="index.php?action=team_edit&id=<?= $team['team_id'] ?>">Edit</a> |
-                <a href="index.php?action=team_delete&id=<?= $team['team_id'] ?>">Delete</a>
+                <a href="index.php?action=team_delete&id=<?= $team['team_id'] ?>">Delete</a> | <a href="index.php?action=team_assign&id=<?= $team['team_id'] ?>">Assign Members</a>
             </td>
         </tr>
     <?php endforeach; ?>
