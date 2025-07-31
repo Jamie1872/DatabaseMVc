@@ -5,12 +5,16 @@ require_once __DIR__ . '/../controllers/PersonnelController.php';
 require_once __DIR__ . '/../controllers/ClubMemberController.php';
 require_once __DIR__ . '/../controllers/FamilyMemberController.php';
 require_once __DIR__ . '/../controllers/SecondaryFamilyController.php';
+require_once __DIR__ . '/../controllers/TeamController.php';
+require_once __DIR__ . '/../controllers/SessionController.php';
 // Add other controllers here...
 $controller = new LocationController();
 $personnelController = new PersonnelController();
 $clubMemberController = new ClubMemberController();
 $familyMemberController = new FamilyMemberController();
 $secondaryFamilyController = new SecondaryFamilyController();
+$TeamController = new TeamController();
+$sessionController = new SessionController();
 
 $action = $_GET['action'] ?? 'home';
 
@@ -45,6 +49,22 @@ switch ($action) {
     case 'secondaryfamily_delete':    $secondaryFamilyController->delete();    break;
     case 'familymember_getAssociatedMembers':     $familyMemberController->getAssociatedMembers();     break;
     case 'inactive_members_display': $clubMemberController->inactiveMembersDisplay(); break;
+
+
+    case 'team_index': $TeamController->index(); break;
+    case 'team_create': $TeamController->create(); break;
+    case 'team_store': $TeamController->store(); break;
+    case 'team_edit': $TeamController->edit(); break;
+    case 'team_update': $TeamController->update(); break;
+    case 'team_delete': $TeamController->delete(); break;
+        case 'session_index': $sessionController->index(); break;
+    case 'session_create': $sessionController->create(); break;
+    case 'session_store': $sessionController->store(); break;
+    case 'session_edit': $sessionController->edit(); break;
+    case 'session_update': $sessionController->update(); break;
+    case 'session_delete': $sessionController->delete(); break;
+
+
 
 
     default: echo "Unknown action.";

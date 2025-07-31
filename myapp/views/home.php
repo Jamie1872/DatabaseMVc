@@ -11,9 +11,14 @@
     <li><a href="index.php?action=familymember_index">Manage Family Members</a></li>
     <li><a href="index.php?action=secondaryfamily_index">Manage Secondary Family Members</a></li>
     <li><a href="index.php?action=clubmember_index">Manage Club Members</a></li>
-    <li><a href="index.php">Manage Team Formations</a></li>
+    <li><a href="index.php?action=team_index">Manage Team Formations</a></li>
+    <li><a href="index.php?action=session_index">Manage Sessions</a></li>
     <li><a href="index.php">Assign Club Members to Team Formations</a></li>
     <li><a href="index.php?action=inactive_members_display">View Inactive Members</a></li>
+    </ul>
+
+    <h3>Reports:</h3>
+    <ul>
     <li><a href="index.php?action=role_complete_report">View Members in All Roles Report</a></li>
     <li><a href="index.php?action=headcoach_familymembers_report">View Head Coach Family Members</a></li>
     <li><a href="index.php?action=undefeated_report">View Undefeated Members Report</a></li>
