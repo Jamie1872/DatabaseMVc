@@ -3,6 +3,13 @@ require_once __DIR__ . '/../config/database.php';
 
 class Team
 {
+    public static function all()
+    {
+        $db = Database::connect();
+        $stmt = $db->query("SELECT * FROM Teams");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public static function create($data)
     {
         $db = Database::connect();
