@@ -85,6 +85,14 @@ class ClubMemberController {
         header('Location: index.php?action=clubmember_index');
         exit;
     }
+
+
+    # Query 13
+    public function showNeverAssignedMembers() {
+        $members = ClubMember::getNeverAssignedMembers();
+        include __DIR__ . '/../views/clubmember/never_assigned_members_report.php';
+    }
+
 # query 16
     public function showRoleCompleteMembers() {
         $members = ClubMember::getMembersWithAllRoles();
