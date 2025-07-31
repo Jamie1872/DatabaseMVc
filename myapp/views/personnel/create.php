@@ -45,7 +45,9 @@ $locations = Location::all();
     </select><br>
 
     <label for="start_date">Start Date:</label>
-    <input type="date" name="start_date" id="start_date" required><br><br><br>
+    <input type="date" name="start_date" id="start_date" required>
+    <label for="end_date">End Date:</label>
+    <input type="date" name="end_date" id="end_date"><br><br><br>
 
     <button type="submit">Create</button>
 </form>

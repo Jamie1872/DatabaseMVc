@@ -28,6 +28,16 @@ class FamilyMember {
         return $db->lastInsertId();
     }
 
+    public static function addLocationHistory($family_member_id, $location_id, $start_date, $end_date) {
+    $db = Database::connect();
+    $stmt = $db->prepare("
+        INSERT INTO FamilyMember_Location_History (family_member_id, location_id, start_date, end_date)
+        VALUES (?, ?, ?, ?)
+    ");
+    $stmt->execute([$family_member_id, $location_id, $start_date, $end_date]);
+}
+
+
     public static function update($id, $data) {
         $db = Database::connect();
         $stmt = $db->prepare("UPDATE FamilyMembers SET
@@ -46,4 +56,39 @@ class FamilyMember {
         $stmt = $db->prepare("DELETE FROM FamilyMembers WHERE family_member_id = ?");
         return $stmt->execute([$id]);
     }
+
+    #query 17
+    public static function getFamilyMembersWhoAreHeadCoachesOfTheirChildrenLocation() {
+    $db = Database::connect();
+    $sql = "
+        SELECT DISTINCT
+            fm.first_name,
+            fm.last_name,
+            fm.phone_number
+        FROM 
+            FamilyMembers fm,
+            ClubMember_Family_Association cmfa,
+            ClubMembers cm,
+            ClubMember_Location_History cmh,
+            Teams t,
+            Personnel p,
+            Personnel_Location_History plh
+        WHERE 
+            fm.family_member_id = cmfa.family_member_id
+            AND cmfa.club_member_id = cm.club_member_id
+            AND cm.club_member_id = cmh.club_member_id
+            AND cmh.end_date IS NULL
+            AND p.ssn = fm.ssn
+            AND t.head_coach_id = p.personnel_id
+            AND t.location_id = cmh.location_id
+            AND plh.personnel_id = p.personnel_id
+            AND plh.location_id = cmh.location_id
+            AND plh.end_date IS NULL
+    ";
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
 }
