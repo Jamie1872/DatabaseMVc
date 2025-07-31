@@ -13,7 +13,6 @@
     <li><a href="index.php?action=clubmember_index">Manage Club Members</a></li>
     <li><a href="index.php?action=team_index">Manage Team Formations</a></li>
     <li><a href="index.php?action=session_index">Manage Sessions</a></li>
-    <li><a href="index.php">Assign Club Members to Team Formations</a></li>
     </ul>
 
     <h3>Reports:</h3>
