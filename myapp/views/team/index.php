@@ -1,0 +1,24 @@
+<h2>Team List</h2>
+<a href="index.php?action=team_create">+ Create New Team</a><br><br>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Coach</th>
+        <th>Location</th>
+        <th>Actions</th>
+    </tr>
+    <?php foreach ($teams as $team): ?>
+        <tr>
+            <td><?= htmlspecialchars($team['team_name']) ?></td>
+            <td><?= $team['gender'] ?></td>
+            <td><?= htmlspecialchars($team['coach_first'] . ' ' . $team['coach_last']) ?></td>
+            <td><?= htmlspecialchars($team['location_name']) ?></td>
+            <td>
+                <a href="index.php?action=team_edit&id=<?= $team['team_id'] ?>">Edit</a> |
+                <a href="index.php?action=team_delete&id=<?= $team['team_id'] ?>">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
