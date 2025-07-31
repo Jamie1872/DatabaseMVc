@@ -93,6 +93,12 @@ class ClubMemberController {
         include __DIR__ . '/../views/clubmember/never_assigned_members_report.php';
     }
 
+    # Query 14
+    public function showActiveMembersJoinedAsMinors() {
+        $members = ClubMember::getActiveMembersJoinedAsMinors();
+        include __DIR__ . '/../views/clubmember/active_members_joined_as_minors.php';
+    }
+
 # query 16
     public function showRoleCompleteMembers() {
         $members = ClubMember::getMembersWithAllRoles();

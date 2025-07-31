@@ -47,6 +47,7 @@ switch ($action) {
     case 'secondaryfamily_edit':     $secondaryFamilyController->edit();    break;
     case 'secondaryfamily_delete':    $secondaryFamilyController->delete();    break;
     case 'never_assigned_members_report': $clubMemberController->showNeverAssignedMembers(); break;
+    case 'active_members_joined_as_minors': $clubMemberController->showActiveMembersJoinedAsMinors(); break;
 
     case 'team_index': $TeamController->index(); break;
     case 'team_create': $TeamController->create(); break;
