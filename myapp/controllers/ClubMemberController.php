@@ -99,6 +99,12 @@ class ClubMemberController {
         include __DIR__ . '/../views/clubmember/active_members_joined_as_minors.php';
     }
 
+    # Query 15
+    public function showSetterOnlyPlayers() {
+        $members = ClubMember::getSetterOnlyPlayers();
+        include __DIR__ . '/../views/clubmember/setter_only_players_report.php';
+    }   
+
 # query 16
     public function showRoleCompleteMembers() {
         $members = ClubMember::getMembersWithAllRoles();
