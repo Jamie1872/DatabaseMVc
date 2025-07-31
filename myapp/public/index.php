@@ -49,6 +49,8 @@ switch ($action) {
     case 'secondaryfamily_delete':    $secondaryFamilyController->delete();    break;
     case 'familymember_getAssociatedMembers':     $familyMemberController->getAssociatedMembers();     break;
     case 'inactive_members_display': $clubMemberController->inactiveMembersDisplay(); break;
+    case 'display_formation_form': $TeamController->displayFilterForm(); break;
+    case 'formation_filter_results': $TeamController->filterResults(); break;
 
 
     case 'team_index': $TeamController->index(); break;

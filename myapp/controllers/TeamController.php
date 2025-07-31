@@ -46,4 +46,18 @@ class TeamController
         Team::delete($id);
         header('Location: index.php?action=team_index');
     }
+
+    public function displayFilterForm(){
+        $locations = Location::all(); 
+        include __DIR__ . '/../views/team/filter_formation_form.php';
+    }
+
+    public function filterResults() {
+        $location_id = $_POST['location_id'];
+        $start_date = $_POST['start_date'];
+        $end_date = $_POST['end_date'];
+
+        $formations = Team::getFormationsByLocationAndDate($location_id, $start_date, $end_date);
+        include __DIR__ . '/../views/team/filter_formation_results.php';
+    }
 }

@@ -15,6 +15,7 @@
     <li><a href="index.php?action=session_index">Manage Sessions</a></li>
     <li><a href="index.php">Assign Club Members to Team Formations</a></li>
     <li><a href="index.php?action=inactive_members_display">View Inactive Members</a></li>
+    <li><a href="index.php?action=display_formation_form">View List of Formations for a Specific Time Frame</a></li>
     </ul>
 
     <h3>Reports:</h3>
