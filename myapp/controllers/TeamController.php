@@ -48,28 +48,6 @@ class TeamController
         header('Location: index.php?action=team_index');
     }
 
-    // public function assignMembers() {
-    //     $team_id = $_GET['id'];
-    //     $db = Database::connect();
-    //     $team = $db->query("SELECT * FROM Teams WHERE team_id = $team_id")->fetch(PDO::FETCH_ASSOC);
-    //     $members = $db->query("SELECT * FROM ClubMembers ORDER BY last_name, first_name")->fetchAll(PDO::FETCH_ASSOC);
-    //     include __DIR__ . '/../views/team/assign_members.php';
-    // }
-
-    // public function assignMembersStore() {
-    //     $club_member_id = $_POST['club_member_id'];
-    //     $team_id = $_POST['team_id'];
-    //     $position = $_POST['position'];
-    //     $start_date = $_POST['start_date'];
-    //     $end_date = $_POST['end_date'] ?: null;
-
-    //     $db = Database::connect();
-    //     $stmt = $db->prepare("INSERT INTO TeamFormation (club_member_id, team_id, position, start_date, end_date) VALUES (?, ?, ?, ?, ?)");
-    //     $stmt->execute([$club_member_id, $team_id, $position, $start_date, $end_date]);
-
-    //     header("Location: index.php?action=team_index");
-    // }
-
     public function assignMembers() {
         $team_id = $_GET['id'];
         $db = Database::connect();
@@ -106,7 +84,7 @@ class TeamController
         $conflict = $conflictStmt->fetch();
 
         if ($conflict) {
-            echo " Conflict: This member is already assigned to another team during this period.";
+            echo " Conflict: Member already scheduled in another team's session within 3 hours.";
             return;
         }
 
