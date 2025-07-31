@@ -86,7 +86,6 @@ class ClubMemberController {
         exit;
     }
 
-
     # Query 13
     public function showNeverAssignedMembers() {
         $members = ClubMember::getNeverAssignedMembers();

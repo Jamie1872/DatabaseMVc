@@ -17,6 +17,7 @@
 
     <h3>Reports:</h3>
     <ul>
+    <li><a href="index.php?action=team_session_report">View Team Session Formation Report</a></li>
     <li><a href="index.php?action=never_assigned_members_report">View Club Members Who Have Never Been Assigned to a Formation
     Team Session</a></li>
     <li><a href="index.php?action=active_members_joined_as_minors">View Active Major Club Members Who Joined as Minors</a></li>
