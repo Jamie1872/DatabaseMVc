@@ -124,21 +124,6 @@ public static function update($id, $data) {
 }
 
 
-    public static function update($id, $data) {
-        $db = Database::connect();
-        $stmt = $db->prepare("UPDATE ClubMembers SET
-            first_name = ?, last_name = ?, date_of_birth = ?, ssn = ?, medicare_number = ?,
-            phone_number = ?, address = ?, city = ?, province = ?, postal_code = ?,
-            height = ?, weight = ?, is_minor = ?
-            WHERE club_member_id = ?");
-        return $stmt->execute([
-            $data['first_name'], $data['last_name'], $data['date_of_birth'], $data['ssn'], $data['medicare_number'],
-            $data['phone_number'], $data['address'], $data['city'], $data['province'], $data['postal_code'],
-            $data['height'], $data['weight'], isset($data['is_minor']) ? 1 : 0,
-            $id
-        ]);
-    }
-
     public static function delete($id) {
         $db = Database::connect();
         $stmt = $db->prepare("DELETE FROM ClubMembers WHERE club_member_id = ?");
@@ -169,12 +154,6 @@ public static function update($id, $data) {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    
-public static function delete($id) {
-    $db = Database::connect();
-    $stmt = $db->prepare("DELETE FROM ClubMembers WHERE club_member_id = ?");
-    return $stmt->execute([$id]);
-}
     #query 16
 public static function getMembersWithAllRoles() {
     $db = Database::connect();
