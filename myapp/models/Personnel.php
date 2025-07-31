@@ -8,6 +8,14 @@ class Personnel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function getCoaches()
+{
+    $db = Database::connect();
+    $stmt = $db->prepare("SELECT personnel_id, first_name, last_name FROM Personnel WHERE role = 'Coach'");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
     public static function find($id) {
         $db = Database::connect();
         $stmt = $db->prepare("SELECT * FROM Personnel WHERE personnel_id = ?");
