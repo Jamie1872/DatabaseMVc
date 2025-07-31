@@ -14,9 +14,9 @@
         <p><strong>Website:</strong> <?= htmlspecialchars($loc['web_address'] ?? '') ?></p>
         <p><strong>Max Capacity:</strong> <?= htmlspecialchars($loc['max_capacity'] ?? '') ?></p>
         <p><strong>General Manager:</strong> <?= htmlspecialchars($loc['general_manager_name'] ?? '') ?></p>
-        <p><strong>Minor Members:</strong> <?= htmlspecialchars($loc['minor_count'] ?? '0') ?></p>
-        <p><strong>Major Members:</strong> <?= htmlspecialchars($loc['major_count'] ?? '0') ?></p>
-        <p><strong>Total Teams:</strong> <?= htmlspecialchars($loc['team_count'] ?? '0') ?></p>
+        <p><strong>Minor Members:</strong> <?= htmlspecialchars($loc['num_minor_members'] ?? '0') ?></p>
+        <p><strong>Major Members:</strong> <?= htmlspecialchars($loc['num_major_members'] ?? '0') ?></p>
+        <p><strong>Total Teams:</strong> <?= htmlspecialchars($loc['num_teams'] ?? '0') ?></p>
     </div>
 <?php endforeach; ?>
 

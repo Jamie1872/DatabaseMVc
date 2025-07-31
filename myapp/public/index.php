@@ -44,6 +44,7 @@ switch ($action) {
     case 'secondaryfamily_edit':     $secondaryFamilyController->edit();    break;
     case 'secondaryfamily_delete':    $secondaryFamilyController->delete();    break;
     case 'familymember_getAssociatedMembers':     $familyMemberController->getAssociatedMembers();     break;
+    case 'inactive_members_display': $clubMemberController->inactiveMembersDisplay(); break;
 
 
     default: echo "Unknown action.";

@@ -61,6 +61,7 @@ class FamilyMemberController {
     include __DIR__ . '/../views/familymember/headcoach_familymembers_report.php';
 }
 
+    #query 9
     public function getAssociatedMembers(){
         $id = $_GET['id'] ?? null;
 

@@ -53,13 +53,25 @@ class Location {
                 l.email AS web_address,
                 l.type,
                 l.max_capacity,
-                CONCAT(p.first_name, ' ', p.last_name) AS general_manager_name,-- General Manager Name
+                gm.general_manager_name,
                 COALESCE(MINOR.count_minor, 0) AS num_minor_members,
                 COALESCE(MAJOR.count_major, 0) AS num_major_members,
                 COALESCE(t.team_count, 0) AS num_teams
             FROM Locations l
-            LEFT JOIN Personnel_Location_History plh ON plh.location_id = l.location_id
-            LEFT JOIN Personnel p ON plh.personnel_id = p.personnel_id AND p.role = 'Administrator'
+            LEFT JOIN (
+				SELECT 
+					plh.location_id,
+					CONCAT(p.first_name, ' ', p.last_name) AS general_manager_name
+				FROM Personnel_Location_History plh
+				JOIN Personnel p ON p.personnel_id = plh.personnel_id
+				WHERE p.role = 'Administrator'
+				AND (plh.end_date IS NULL OR plh.end_date = (
+					SELECT MAX(plh2.end_date)
+					FROM Personnel_Location_History plh2
+					WHERE plh2.location_id = plh.location_id
+					  AND plh2.personnel_id = plh.personnel_id
+				))
+			) gm ON gm.location_id = l.location_id
             -- Count of MINOR members
             LEFT JOIN (
                 SELECT location_id, COUNT(DISTINCT cm.club_member_id) AS count_minor

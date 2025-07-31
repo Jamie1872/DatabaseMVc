@@ -85,6 +85,12 @@ class ClubMemberController {
         header('Location: index.php?action=clubmember_index');
         exit;
     }
+
+    # query 11
+    public function inactiveMembersDisplay(){
+        $members = ClubMember::getInactiveMembers();
+        include __DIR__ . '/../views/clubmember/inactive_members.php';
+    }
 # query 16
     public function showRoleCompleteMembers() {
         $members = ClubMember::getMembersWithAllRoles();
