@@ -54,4 +54,11 @@ class FamilyMemberController {
         header("Location: index.php?action=familymember_index");
         exit;
     }
+
+    #query 17
+    public function showHeadCoachFamilyMembers() {
+    $members = FamilyMember::getFamilyMembersWhoAreHeadCoachesOfTheirChildrenLocation();
+    include __DIR__ . '/../views/familymember/headcoach_familymembers_report.php';
+}
+
 }

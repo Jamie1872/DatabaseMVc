@@ -3,7 +3,7 @@ require_once __DIR__ . '/../config/database.php';
 
 class SecondaryFamilyMember
 {
-    public function getAll()
+    public static function getAll()
     {
         $db = Database::connect();
         $stmt = $db->query("SELECT * FROM SecondaryFamilyMembers ORDER BY last_name, first_name");

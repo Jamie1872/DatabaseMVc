@@ -34,6 +34,10 @@ switch ($action) {
     case 'familymember_create':     $familyMemberController->create();     break;
     case 'familymember_edit':     $familyMemberController->edit();     break;
     case 'familymember_delete':     $familyMemberController->delete();     break;
+    case 'role_complete_report': $clubMemberController->showRoleCompleteMembers(); break;
+    case 'headcoach_familymembers_report': $familyMemberController->showHeadCoachFamilyMembers(); break;
+    case 'undefeated_report':$clubMemberController->showUndefeatedMembers();break;
+    case 'volunteer_family_minors_report': $personnelController->showVolunteerFamilyOfMinors(); break;
     case 'secondaryfamily_index':     $secondaryFamilyController->index();    break;
     case 'secondaryfamily_create':     $secondaryFamilyController->create();     break;
     case 'secondaryfamily_edit':     $secondaryFamilyController->edit();    break;
@@ -41,3 +45,6 @@ switch ($action) {
 
     default: echo "Unknown action.";
 }
+
+
+

@@ -57,4 +57,32 @@ class Personnel {
         $stmt = $db->prepare("DELETE FROM Personnel WHERE personnel_id = ?");
         $stmt->execute([$id]);
     }
+
+    #query 19
+    public static function getVolunteerFamilyOfMinors() {
+    $db = Database::connect();
+    $sql = "
+      SELECT 
+    p.first_name,
+    p.last_name,
+    COUNT(cm.club_member_id) AS minor_count,
+    p.phone_number,
+    p.email,
+    l.name AS location_name,
+    p.role
+FROM Personnel p
+JOIN Personnel_Location_History plh ON p.personnel_id = plh.personnel_id AND plh.end_date IS NULL
+JOIN Locations l ON plh.location_id = l.location_id
+JOIN FamilyMembers fm ON p.email = fm.email
+JOIN ClubMember_Family_Association cmfa ON fm.family_member_id = cmfa.family_member_id
+JOIN ClubMembers cm ON cmfa.club_member_id = cm.club_member_id AND cm.is_minor = TRUE
+WHERE p.mandate = 'Volunteer'
+GROUP BY p.personnel_id, l.name, p.role
+ORDER BY l.name ASC, p.role ASC, p.first_name ASC, p.last_name ASC";
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }
