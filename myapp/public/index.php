@@ -53,7 +53,14 @@ switch ($action) {
     case 'team_edit': $TeamController->edit(); break;
     case 'team_update': $TeamController->update(); break;
     case 'team_delete': $TeamController->delete(); break;
-        case 'session_index': $sessionController->index(); break;
+    case 'team_assign': $TeamController->assignMembers(); break;
+    case 'team_assign_store': $TeamController->assignMembersStore(); break;
+    case 'team_assignment_edit': $TeamController->editAssignment(); break;
+    case 'team_assignment_update': $TeamController->updateAssignment(); break;
+    case 'team_assignment_delete': $TeamController->deleteAssignment(); break;
+
+
+    case 'session_index': $sessionController->index(); break;
     case 'session_create': $sessionController->create(); break;
     case 'session_store': $sessionController->store(); break;
     case 'session_edit': $sessionController->edit(); break;
