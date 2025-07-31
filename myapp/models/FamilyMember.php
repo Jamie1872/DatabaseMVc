@@ -90,5 +90,32 @@ class FamilyMember {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+    public static function getAssociatedMembers($id) {
+        $db = Database::connect();
+
+        $stmt = $db->prepare("SELECT 
+            sfm.first_name AS secondary_first_name,
+            sfm.last_name AS secondary_last_name,
+            sfm.phone_number AS secondary_phone_number,
+            cm.club_member_id,
+            cm.first_name AS club_member_first_name,
+            cm.last_name AS club_member_last_name,
+            cm.date_of_birth,
+            cm.ssn,
+            cm.medicare_number,
+            cm.phone_number AS club_member_phone,
+            cm.address,
+            cm.city,
+            cm.province,
+            cm.postal_code,
+            sfa.relationship_type
+            FROM SecondaryFamily_Association sfa
+            JOIN SecondaryFamilyMembers sfm ON sfa.secondary_family_member_id = sfm.secondary_family_member_id
+            JOIN ClubMembers cm ON cm.club_member_id = sfa.club_member_id
+            WHERE sfa.primary_family_member_id = ?;");
+
+        $stmt->execute([$id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }

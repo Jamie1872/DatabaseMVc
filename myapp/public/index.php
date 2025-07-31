@@ -43,6 +43,8 @@ switch ($action) {
     case 'secondaryfamily_create':     $secondaryFamilyController->create();     break;
     case 'secondaryfamily_edit':     $secondaryFamilyController->edit();    break;
     case 'secondaryfamily_delete':    $secondaryFamilyController->delete();    break;
+    case 'familymember_getAssociatedMembers':     $familyMemberController->getAssociatedMembers();     break;
+
 
     default: echo "Unknown action.";
 }
