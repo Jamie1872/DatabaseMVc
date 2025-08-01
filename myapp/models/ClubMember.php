@@ -224,6 +224,10 @@ public static function delete($id) {
         GROUP BY cm.club_member_id, cm.first_name, cm.last_name, cm.date_of_birth, cm.phone_number, cm.email, l.name
         ORDER BY location_name ASC, cm.club_member_id ASC;
         ";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     #query 11
