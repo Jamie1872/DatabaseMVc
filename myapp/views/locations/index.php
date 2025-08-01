@@ -35,4 +35,6 @@
 
 </table>
 <br>
+<a href="index.php?action=location_full_details" style="display: inline-block; margin-bottom: 10px; padding: 8px 12px; background-color: #5ea0e7ff; color: white; text-decoration: none; border-radius: 4px;">View All Location Details</a>
+<br>
 <a href="index.php" style="display: inline-block; margin-bottom: 10px; padding: 8px 12px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 4px;">Go Back</a>

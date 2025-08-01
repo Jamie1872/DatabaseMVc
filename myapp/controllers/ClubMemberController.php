@@ -104,6 +104,12 @@ class ClubMemberController {
         include __DIR__ . '/../views/clubmember/setter_only_players_report.php';
     }   
 
+    # query 11
+    public function inactiveMembersDisplay(){
+        $members = ClubMember::getInactiveMembers();
+        include __DIR__ . '/../views/clubmember/inactive_members.php';
+    }
+
 # query 16
     public function showRoleCompleteMembers() {
         $members = ClubMember::getMembersWithAllRoles();

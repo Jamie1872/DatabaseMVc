@@ -61,4 +61,16 @@ class FamilyMemberController {
     include __DIR__ . '/../views/familymember/headcoach_familymembers_report.php';
 }
 
+    #query 9
+    public function getAssociatedMembers(){
+        $id = $_GET['id'] ?? null;
+
+        if ($id) {
+            $associatedMembers = FamilyMember::getAssociatedMembers($id);
+            include __DIR__ . '/../views/familymember/associated_members.php';
+        } else {
+            header("Location: index.php?action=familymember_index");
+            exit;
+        }    
+    }
 }

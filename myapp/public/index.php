@@ -26,6 +26,7 @@ switch ($action) {
     case 'location_create':  $controller->create(); break;
     case 'location_edit':    $controller->edit(); break;
     case 'location_delete':  $controller->delete(); break;
+    case 'location_full_details': $controller->fullDetails(); break;
     case 'personnel_display': $personnelController->display(); break;
     case 'personnel_create':  $personnelController->create(); break;
     case 'personnel_edit':    $personnelController->edit(); break;
@@ -46,10 +47,16 @@ switch ($action) {
     case 'secondaryfamily_create':     $secondaryFamilyController->create();     break;
     case 'secondaryfamily_edit':     $secondaryFamilyController->edit();    break;
     case 'secondaryfamily_delete':    $secondaryFamilyController->delete();    break;
+
     case 'never_assigned_members_report': $clubMemberController->showNeverAssignedMembers(); break;
     case 'active_members_joined_as_minors': $clubMemberController->showActiveMembersJoinedAsMinors(); break;
     case 'setter_only_players_report': $clubMemberController->showSetterOnlyPlayers(); break;
     case 'team_session_report': $sessionController->showTeamSessionReport(); break;
+    case 'familymember_getAssociatedMembers':     $familyMemberController->getAssociatedMembers();     break;
+    case 'inactive_members_display': $clubMemberController->inactiveMembersDisplay(); break;
+    
+    case 'display_formation_form': $TeamController->displayFilterForm(); break;
+    case 'formation_filter_results': $TeamController->filterResults(); break;
 
     case 'team_index': $TeamController->index(); break;
     case 'team_create': $TeamController->create(); break;

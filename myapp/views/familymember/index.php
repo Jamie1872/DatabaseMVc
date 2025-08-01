@@ -28,7 +28,8 @@
             <td><?= htmlspecialchars($m['email']) ?></td>
             <td>
                 <a href="?action=familymember_edit&id=<?= $m['family_member_id'] ?>">Edit</a> |
-                <a href="?action=familymember_delete&id=<?= $m['family_member_id'] ?>">Delete</a>
+                <a href="?action=familymember_delete&id=<?= $m['family_member_id'] ?>">Delete</a> |
+                <a href="?action=familymember_getAssociatedMembers&id=<?= $m['family_member_id'] ?>">Associated Members</a>
             </td>
         </tr>
     <?php endforeach; ?>

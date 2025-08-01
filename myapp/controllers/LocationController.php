@@ -32,4 +32,10 @@ class LocationController {
         header("Location: index.php?action=location_display");
         exit;
     }
+
+    # query 8
+    public function fullDetails() {
+        $locations = Location::withFullDetails(); 
+        require_once __DIR__ . '/../views/locations/full_details.php';
+    }
 }

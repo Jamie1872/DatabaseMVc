@@ -224,6 +224,27 @@ public static function delete($id) {
         GROUP BY cm.club_member_id, cm.first_name, cm.last_name, cm.date_of_birth, cm.phone_number, cm.email, l.name
         ORDER BY location_name ASC, cm.club_member_id ASC;
         ";
+
+
+    #query 11
+    public static function getInactiveMembers(){
+        $db = Database::connect();
+        $sql="  SELECT 
+                    cm.club_member_id,
+                    cm.first_name,
+                    cm.last_name
+                FROM 
+                    ClubMembers cm
+                JOIN 
+                    ClubMember_Location_History clh ON cm.club_member_id = clh.club_member_id
+                GROUP BY 
+                    cm.club_member_id, cm.first_name, cm.last_name
+                HAVING 
+                    COUNT(DISTINCT clh.location_id) >= 2
+                    AND MIN(clh.start_date) <= DATE_SUB(CURDATE(), INTERVAL 2 YEAR)
+                    AND SUM(CASE WHEN clh.end_date IS NULL THEN 1 ELSE 0 END) = 0
+                ORDER BY 
+                    cm.club_member_id ASC;";
         $stmt = $db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
