@@ -85,6 +85,25 @@ class ClubMemberController {
         header('Location: index.php?action=clubmember_index');
         exit;
     }
+
+    # Query 13
+    public function showNeverAssignedMembers() {
+        $members = ClubMember::getNeverAssignedMembers();
+        include __DIR__ . '/../views/clubmember/never_assigned_members_report.php';
+    }
+
+    # Query 14
+    public function showActiveMembersJoinedAsMinors() {
+        $members = ClubMember::getActiveMembersJoinedAsMinors();
+        include __DIR__ . '/../views/clubmember/active_members_joined_as_minors.php';
+    }
+
+    # Query 15
+    public function showSetterOnlyPlayers() {
+        $members = ClubMember::getSetterOnlyPlayers();
+        include __DIR__ . '/../views/clubmember/setter_only_players_report.php';
+    }   
+
 # query 16
     public function showRoleCompleteMembers() {
         $members = ClubMember::getMembersWithAllRoles();

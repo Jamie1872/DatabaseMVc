@@ -42,4 +42,17 @@ class SessionController
         Session::delete($id);
         header("Location: index.php?action=session_index");
     }
+
+    # Query 12
+    public function showTeamSessionReport() {
+        $startDate = $_GET['start_date'] ?? null;
+        $endDate = $_GET['end_date'] ?? null;
+        $report = [];
+    
+        if ($startDate && $endDate) {
+            $report = Session::getTeamSessionReport($startDate, $endDate);
+        }
+    
+        include __DIR__ . '/../views/session/team_session_report.php';
+    }
 }
