@@ -56,10 +56,20 @@ class FamilyMemberController {
     }
 
     #query 17
-    public function showHeadCoachFamilyMembers() {
-    $members = FamilyMember::getFamilyMembersWhoAreHeadCoachesOfTheirChildrenLocation();
-    include __DIR__ . '/../views/familymember/headcoach_familymembers_report.php';
+    public function showHeadCoachLocationForm() {
+    include __DIR__ . '/../views/familymember/headcoach_location_dropdown.php';
 }
+
+    public function showHeadCoachFamilyMembers() {
+    if (!isset($_GET['location_id'])) {
+        echo "Location ID is required.";
+        return;
+    }
+    $locationId = $_GET['location_id'];
+    $results = FamilyMember::getHeadCoachFamilyMembersByLocation($locationId);
+    include __DIR__ . '/../views/familymember/head_coach_family_list.php';
+}
+
 
     #query 9
     public function getAssociatedMembers(){

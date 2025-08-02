@@ -16,6 +16,7 @@
     <li><a href="index.php">Assign Club Members to Team Formations</a></li>
     <li><a href="index.php?action=inactive_members_display">View Inactive Members</a></li>
     <li><a href="index.php?action=display_formation_form">View List of Formations for a Specific Time Frame</a></li>
+    <li><a href="index.php?action=headcoach_dropdown">Select Head Coach Family Members by Location</a></li>
     </ul>
 
     <h3>Reports:</h3>
@@ -26,9 +27,10 @@
     <li><a href="index.php?action=active_members_joined_as_minors">View Active Major Club Members Who Joined as Minors</a></li>
     <li><a href="index.php?action=setter_only_players_report">View Club Members Who Have Only Been Assigned as Setters</a></li>
     <li><a href="index.php?action=role_complete_report">View Members in All Roles Report</a></li>
-    <li><a href="index.php?action=headcoach_familymembers_report">View Head Coach Family Members</a></li>
     <li><a href="index.php?action=undefeated_report">View Undefeated Members Report</a></li>
     <li><a href="index.php?action=volunteer_family_minors_report">Volunteer Family-Minor Report</a></li>
-    </ul>
+    <li><a href="index.php?action=view_email_log">View Email Logs</a></li>
+    <li><a href="index.php?action=generate_emails">Generate Weekly Emails</a></li>
+</ul>
 </body>
 </html>

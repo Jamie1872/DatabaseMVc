@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../controllers/LocationController.php';
 require_once __DIR__ . '/../controllers/PersonnelController.php';
@@ -7,6 +10,9 @@ require_once __DIR__ . '/../controllers/FamilyMemberController.php';
 require_once __DIR__ . '/../controllers/SecondaryFamilyController.php';
 require_once __DIR__ . '/../controllers/TeamController.php';
 require_once __DIR__ . '/../controllers/SessionController.php';
+require_once __DIR__ . '/../controllers/EmailController.php';//added
+
+
 // Add other controllers here...
 $controller = new LocationController();
 $personnelController = new PersonnelController();
@@ -15,6 +21,7 @@ $familyMemberController = new FamilyMemberController();
 $secondaryFamilyController = new SecondaryFamilyController();
 $TeamController = new TeamController();
 $sessionController = new SessionController();
+$emailController = new EmailController(); // added
 
 $action = $_GET['action'] ?? 'home';
 
@@ -40,7 +47,7 @@ switch ($action) {
     case 'familymember_edit':     $familyMemberController->edit();     break;
     case 'familymember_delete':     $familyMemberController->delete();     break;
     case 'role_complete_report': $clubMemberController->showRoleCompleteMembers(); break;
-    case 'headcoach_familymembers_report': $familyMemberController->showHeadCoachFamilyMembers(); break;
+    #case 'headcoach_familymembers_report': $familyMemberController->showHeadCoachFamilyMembers(); break;
     case 'undefeated_report':$clubMemberController->showUndefeatedMembers();break;
     case 'volunteer_family_minors_report': $personnelController->showVolunteerFamilyOfMinors(); break;
     case 'secondaryfamily_index':     $secondaryFamilyController->index();    break;
@@ -78,8 +85,13 @@ switch ($action) {
     case 'session_update': $sessionController->update(); break;
     case 'session_delete': $sessionController->delete(); break;
 
+    case 'headcoach_dropdown':$familyMemberController->showHeadCoachLocationForm(); break;//added
+    case 'headcoach_familymembers_report':$familyMemberController->showHeadCoachFamilyMembers(); break;//added
+    case 'generate_emails':$emailController->generateEmails();break; //added
+    case 'view_email_log':$emailController->viewEmailLog();break; //added
     default: echo "Unknown action.";
 }
+
 
 
 
