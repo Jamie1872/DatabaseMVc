@@ -14,6 +14,7 @@
         <li><a href="index.php?action=team_index">Manage Team Formations</a></li>
         <li><a href="index.php?action=session_index">Manage Sessions</a></li>
         <li><a href="index.php?action=display_formation_form">View List of Formations for a Specific Time Frame</a></li>
+        <li><a href="index.php?action=add_payment_form">Add Payment for Club Member</a></li>
     </ul>
 
     <h3>Reports:</h3>

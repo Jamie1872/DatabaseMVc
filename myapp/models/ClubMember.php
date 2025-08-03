@@ -21,16 +21,29 @@ class ClubMember {
         return []; // no team or no location for team
     }
 
+    $currentYear = date('Y');
+
     // Get members assigned currently to the same location as the team
     $stmt = $db->prepare("
         SELECT cm.club_member_id, cm.first_name, cm.last_name
         FROM ClubMembers cm
         JOIN ClubMember_Location_History clh ON cm.club_member_id = clh.club_member_id
+        LEFT JOIN (
+            SELECT club_member_id, SUM(amount_paid) AS total_paid
+            FROM Payments
+            WHERE membership_year = ?
+            GROUP BY club_member_id
+        ) pay ON cm.club_member_id = pay.club_member_id
         WHERE clh.location_id = ?
-        AND (clh.end_date IS NULL OR clh.end_date >= CURDATE())
-        AND clh.start_date <= CURDATE()
+          AND (clh.end_date IS NULL OR clh.end_date >= CURDATE())
+          AND clh.start_date <= CURDATE()
+          AND (
+              (cm.is_minor = 1 AND pay.total_paid >= 100)
+              OR
+              (cm.is_minor = 0 AND pay.total_paid >= 200)
+          )
         ");
-    $stmt->execute([$teamLocation]);
+        $stmt->execute([$teamLocation, $currentYear]);
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -224,7 +237,6 @@ public static function delete($id) {
         GROUP BY cm.club_member_id, cm.first_name, cm.last_name, cm.date_of_birth, cm.phone_number, cm.email, l.name
         ORDER BY location_name ASC, cm.club_member_id ASC;
         ";
-        
         $stmt = $db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -233,6 +245,9 @@ public static function delete($id) {
     #query 11
     public static function getInactiveMembers(){
         $db = Database::connect();
+
+        $prevYear = date('Y') - 1;
+
         $sql="  SELECT 
                     cm.club_member_id,
                     cm.first_name,
@@ -241,16 +256,27 @@ public static function delete($id) {
                     ClubMembers cm
                 JOIN 
                     ClubMember_Location_History clh ON cm.club_member_id = clh.club_member_id
+                LEFT JOIN ( 
+                    SELECT club_member_id, SUM(amount_paid) AS total_paid
+                    FROM Payments
+                    WHERE membership_year = ?
+                    GROUP BY club_member_id
+                    ) pay ON cm.club_member_id = pay.club_member_id
                 GROUP BY 
-                    cm.club_member_id, cm.first_name, cm.last_name
+                    cm.club_member_id, cm.first_name, cm.last_name, cm.is_minor, pay.total_paid
                 HAVING 
                     COUNT(DISTINCT clh.location_id) >= 2
                     AND MIN(clh.start_date) <= DATE_SUB(CURDATE(), INTERVAL 2 YEAR)
                     AND SUM(CASE WHEN clh.end_date IS NULL THEN 1 ELSE 0 END) = 0
+                    AND (
+                        (cm.is_minor = 1 AND (pay.total_paid IS NULL OR pay.total_paid < 100))
+                        OR
+                        (cm.is_minor = 0 AND (pay.total_paid IS NULL OR pay.total_paid < 200))
+                    )
                 ORDER BY 
                     cm.club_member_id ASC;";
         $stmt = $db->prepare($sql);
-        $stmt->execute();
+        $stmt->execute([$prevYear]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
