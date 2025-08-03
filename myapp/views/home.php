@@ -20,7 +20,6 @@
 
     <h3>Reports:</h3>
     <ul>
-
         <li><a href="index.php?action=inactive_members_display">View Inactive Members Report</a></li>
         <li><a href="index.php?action=team_session_report">View Team Session Formation Report</a></li>
         <li><a href="index.php?action=never_assigned_members_report">View Club Members Who Have Never Been Assigned to a Formation
