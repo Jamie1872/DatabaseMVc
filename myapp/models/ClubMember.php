@@ -258,7 +258,7 @@ public static function delete($id) {
 public static function getMembersWithAllRoles() {
     $db = Database::connect();
     $sql = "
-    SELECT 
+ SELECT 
     cm.club_member_id,
     cm.first_name,
     cm.last_name,
@@ -266,27 +266,28 @@ public static function getMembersWithAllRoles() {
     cm.phone_number,
     cm.email,
     l.name AS location_name
-    FROM 
-    ClubMembers cm,
-    Session_Player_Assignment spa,
-    ClubMember_Location_History clh,
-    Locations l
-    WHERE 
-    cm.club_member_id = spa.club_member_id
-    AND cm.club_member_id = clh.club_member_id
-    AND clh.end_date IS NULL
-    AND clh.location_id = l.location_id
-    GROUP BY 
+FROM 
+    ClubMembers cm
+JOIN Session_Player_Assignment spa ON cm.club_member_id = spa.club_member_id
+JOIN Sessions s ON spa.session_id = s.session_id
+JOIN ClubMember_Location_History clh ON cm.club_member_id = clh.club_member_id
+JOIN Locations l ON clh.location_id = l.location_id
+WHERE 
+    clh.end_date IS NULL
+    AND s.session_type = 'Game'
+GROUP BY 
     cm.club_member_id
-    HAVING 
-    SUM(spa.role = 'Goalkeeper') > 0
-    AND SUM(spa.role = 'Defender') > 0
-    AND SUM(spa.role = 'Midfielder') > 0
-    AND SUM(spa.role = 'Forward') > 0
-    ORDER BY 
+HAVING 
+    SUM(spa.role = 'Setter') > 0 AND
+    SUM(spa.role = 'Outside Hitter') > 0 AND
+    SUM(spa.role = 'Opposite Hitter') > 0 AND
+    SUM(spa.role = 'Middle Blocker') > 0 AND
+    SUM(spa.role = 'Defensive Specialist') > 0 AND
+    SUM(spa.role = 'Libero') > 0
+ORDER BY 
     location_name ASC,
-    cm.club_member_id ASC
-    ";
+    cm.club_member_id ASC;
+";
     $stmt = $db->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
