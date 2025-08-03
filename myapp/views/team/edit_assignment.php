@@ -6,11 +6,14 @@
 
     <label>Position:
         <select name="position" required>
-            <option value="Goalkeeper" <?= $assignment['position'] == 'Goalkeeper' ? 'selected' : '' ?>>Goalkeeper</option>
-            <option value="Defender" <?= $assignment['position'] == 'Defender' ? 'selected' : '' ?>>Defender</option>
-            <option value="Midfielder" <?= $assignment['position'] == 'Midfielder' ? 'selected' : '' ?>>Midfielder</option>
-            <option value="Forward" <?= $assignment['position'] == 'Forward' ? 'selected' : '' ?>>Forward</option>
+            <option value="Setter" <?= $assignment['position'] == 'Setter' ? 'selected' : '' ?>>Setter</option>
+            <option value="Outside Hitter" <?= $assignment['position'] == 'Outside Hitter' ? 'selected' : '' ?>>Outside Hitter</option>
+            <option value="Opposite Hitter" <?= $assignment['position'] == 'Opposite Hitter' ? 'selected' : '' ?>>Opposite Hitter</option>
+            <option value="Middle Blocker" <?= $assignment['position'] == 'Middle Blocker' ? 'selected' : '' ?>>Middle Blocker</option>
+            <option value="Defensive Specialist" <?= $assignment['position'] == 'Defensive Specialist' ? 'selected' : '' ?>>Defensive Specialist</option>
+            <option value="Libero" <?= $assignment['position'] == 'Libero' ? 'selected' : '' ?>>Libero</option>
         </select>
+
     </label><br><br>
 
     <label>Start Date: <input type="date" name="start_date" value="<?= $assignment['start_date'] ?>" required></label><br><br>

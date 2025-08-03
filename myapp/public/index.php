@@ -13,6 +13,7 @@ require_once __DIR__ . '/../controllers/SessionController.php';
 require_once __DIR__ . '/../controllers/EmailController.php';//added
 
 
+require_once __DIR__ . '/../controllers/PaymentController.php';
 // Add other controllers here...
 $controller = new LocationController();
 $personnelController = new PersonnelController();
@@ -22,6 +23,7 @@ $secondaryFamilyController = new SecondaryFamilyController();
 $TeamController = new TeamController();
 $sessionController = new SessionController();
 $emailController = new EmailController(); // added
+$PaymentController = new PaymentController();
 
 $action = $_GET['action'] ?? 'home';
 
@@ -61,7 +63,7 @@ switch ($action) {
     case 'team_session_report': $sessionController->showTeamSessionReport(); break;
     case 'familymember_getAssociatedMembers':     $familyMemberController->getAssociatedMembers();     break;
     case 'inactive_members_display': $clubMemberController->inactiveMembersDisplay(); break;
-    
+
     case 'display_formation_form': $TeamController->displayFilterForm(); break;
     case 'formation_filter_results': $TeamController->filterResults(); break;
 
@@ -89,6 +91,11 @@ switch ($action) {
     case 'headcoach_familymembers_report':$familyMemberController->showHeadCoachFamilyMembers(); break;//added
     case 'generate_emails':$emailController->generateEmails();break; //added
     case 'view_email_log':$emailController->viewEmailLog();break; //added
+    case 'add_payment_form': $PaymentController->addPaymentForm(); break;
+    case 'submit_payment': $PaymentController->submitPayment(); break;
+    case 'view_member_payments': $PaymentController->viewMemberPayments(); break;
+    case 'view_all_payments': $PaymentController-> viewAllPayments(); break;
+
     default: echo "Unknown action.";
 }
 

@@ -13,7 +13,7 @@ $secondaryFamilyMembers = SecondaryFamilyMember::getAll();
     <label>First Name: <input type="text" name="first_name" required></label><br>
     <label>Last Name: <input type="text" name="last_name" required></label><br>
     <label>Date of Birth: <input type="date" name="date_of_birth" required></label><br>
-    <label>SSN: <input type="text" name="ssn"></label><br>
+    <label>SSN: <input type="text" name="ssn" required></label><br>
     <label>Medicare Number: <input type="text" name="medicare_number"></label><br>
     <label>Phone Number: <input type="text" name="phone_number"></label><br>
     <label>Address: <input type="text" name="address"></label><br>
