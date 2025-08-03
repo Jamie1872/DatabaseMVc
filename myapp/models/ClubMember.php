@@ -280,9 +280,8 @@ public static function getInactiveMembers(){
     $stmt->execute([$prevYear]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 #query 16
-    public static function getMembersWithAllRoles() {
+public static function getMembersWithAllRoles() {
     $db = Database::connect();
     $sql = "
         SELECT 
@@ -297,25 +296,24 @@ public static function getInactiveMembers(){
             ClubMembers cm
         JOIN Session_Player_Assignment spa ON cm.club_member_id = spa.club_member_id
         JOIN Sessions s ON spa.session_id = s.session_id
-        JOIN ClubMember_Location_History clh ON cm.club_member_id = clh.club_member_id
+        JOIN ClubMember_Location_History clh ON cm.club_member_id = clh.club_member_id AND clh.end_date IS NULL
         JOIN Locations l ON clh.location_id = l.location_id
         WHERE 
-            clh.end_date IS NULL
-            AND s.session_type = 'Game'
+            s.session_type = 'Game'
             AND EXISTS (
                 SELECT 1 FROM Payments p 
                 WHERE p.club_member_id = cm.club_member_id 
-                AND p.membership_year = YEAR(CURDATE())
+                  AND p.membership_year = YEAR(CURDATE())
             )
         GROUP BY 
             cm.club_member_id
         HAVING 
-            SUM(spa.role = 'Setter') > 0 AND
-            SUM(spa.role = 'Outside Hitter') > 0 AND
-            SUM(spa.role = 'Opposite Hitter') > 0 AND
-            SUM(spa.role = 'Middle Blocker') > 0 AND
-            SUM(spa.role = 'Defensive Specialist') > 0 AND
-            SUM(spa.role = 'Libero') > 0
+            COUNT(DISTINCT CASE WHEN spa.role = 'Setter' THEN spa.role END) > 0 AND
+            COUNT(DISTINCT CASE WHEN spa.role = 'Outside Hitter' THEN spa.role END) > 0 AND
+            COUNT(DISTINCT CASE WHEN spa.role = 'Opposite Hitter' THEN spa.role END) > 0 AND
+            COUNT(DISTINCT CASE WHEN spa.role = 'Middle Blocker' THEN spa.role END) > 0 AND
+            COUNT(DISTINCT CASE WHEN spa.role = 'Defensive Specialist' THEN spa.role END) > 0 AND
+            COUNT(DISTINCT CASE WHEN spa.role = 'Libero' THEN spa.role END) > 0
         ORDER BY 
             location_name ASC,
             cm.club_member_id ASC;
@@ -324,6 +322,7 @@ public static function getInactiveMembers(){
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 
     #query 18
