@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 
+// Get upcoming sessions in the next 7 days
 function getUpcomingSessions() {
     $db = Database::connect();
-
     $today = date('Y-m-d');
     $nextWeek = date('Y-m-d', strtotime('+7 days'));
 
@@ -21,19 +21,24 @@ function getUpcomingSessions() {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function getSessionPlayers($session_id) {
+// Get players from both teams (team1 and team2)
+function getSessionPlayers($team1_id, $team2_id) {
     $db = Database::connect();
+
     $query = "
-        SELECT cm.club_member_id, cm.first_name, cm.last_name, cm.email, spa.role
-        FROM Session_Player_Assignment spa
-        JOIN ClubMembers cm ON spa.club_member_id = cm.club_member_id
-        WHERE spa.session_id = ?
+        SELECT cm.club_member_id, cm.first_name, cm.last_name, cm.email, tf.position
+        FROM TeamFormation tf
+        JOIN ClubMembers cm ON tf.club_member_id = cm.club_member_id
+        WHERE tf.team_id IN (?, ?)
     ";
+
     $stmt = $db->prepare($query);
-    $stmt->execute([$session_id]);
+    $stmt->execute([$team1_id, $team2_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+
+// Log email to EmailLog table
 function logEmail($senderLocationId, $receiverId, $subject, $body) {
     $db = Database::connect();
     $snippet = substr($body, 0, 100);
@@ -44,28 +49,28 @@ function logEmail($senderLocationId, $receiverId, $subject, $body) {
     $stmt->execute([$senderLocationId, $receiverId, $subject, $snippet]);
 }
 
-
+// Main execution
 $sessions = getUpcomingSessions();
 
 foreach ($sessions as $session) {
-    $players = getSessionPlayers($session['session_id']);
+    $players = getSessionPlayers($session['team1_id'], $session['team2_id']);
+
 
     foreach ($players as $player) {
         $sessionDateTime = strtotime($session['session_date'] . ' ' . $session['session_time']);
         $formattedDate = date('l d-M-Y g:i A', $sessionDateTime);
 
-        // Subject 
         $subject = "{$session['location_name']} {$session['team_name']} {$formattedDate} {$session['session_type']} session";
 
-        // Body 
         $body = "Dear {$player['first_name']} {$player['last_name']},\n\n" .
             "You are scheduled for a {$session['session_type']} session on {$session['session_date']} at {$session['session_time']}.\n" .
-            "Your role: {$player['role']}\n\n" .
+            "Your position: {$player['position']}\n\n" .
             "Head Coach: {$session['coach_first']} {$session['coach_last']} ({$session['coach_email']})\n" .
             "Session Type: {$session['session_type']}\n" .
             "Address: {$session['address']}\n\n" .
             "Thank you.";
 
+        //echo "Logging email for {$player['first_name']} {$player['last_name']}...\n";
         logEmail($session['location_id'], $player['club_member_id'], $subject, $body);
     }
 }
