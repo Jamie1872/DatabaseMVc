@@ -21,10 +21,13 @@ $members = ClubMember::getEligibleMembersForTeam($team['team_id']);
 
     <label>Position:
         <select name="position" required>
-            <option value="Goalkeeper">Goalkeeper</option>
-            <option value="Defender">Defender</option>
-            <option value="Midfielder">Midfielder</option>
-            <option value="Forward">Forward</option>
+            <option value="Setter">Setter</option>
+            <option value="Outside Hitter">Outside Hitter</option>
+            <option value="Opposite Hitter">Opposite Hitter</option>
+            <option value="Middle Blocker">Middle Blocker</option>
+            <option value="Defensive Specialist">Defensive Specialist</option>
+            <option value="Libero">Libero</option>
+
         </select>
     </label><br><br>
 
