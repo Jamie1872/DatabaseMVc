@@ -58,26 +58,26 @@ class FamilyMember {
     }
 
     #query 17
-   public static function getHeadCoachFamilyMembersByLocation($locationId) {
+ public static function getHeadCoachFamilyMembersByLocation($locationId) {
     $db = Database::connect();
 
-    $sql = $sql = "
-   SELECT DISTINCT fm.first_name, fm.last_name, fm.phone_number
-   FROM FamilyMembers fm
-   JOIN ClubMember_Family_Association cmfa ON fm.family_member_id = cmfa.family_member_id
-   JOIN ClubMember_Location_History clh ON cmfa.club_member_id = clh.club_member_id
-   JOIN Personnel p ON p.email = fm.email
-   JOIN Teams t ON t.head_coach_id = p.personnel_id
-   WHERE clh.end_date IS NULL
-   AND clh.location_id = :locId
-   AND t.location_id = :locId
-";
-
+    $sql = "
+        SELECT DISTINCT fm.first_name, fm.last_name, fm.phone_number
+    FROM FamilyMembers fm
+    JOIN ClubMember_Family_Association cmfa ON fm.family_member_id = cmfa.family_member_id
+    JOIN ClubMember_Location_History clh ON cmfa.club_member_id = clh.club_member_id
+    JOIN Personnel p ON p.ssn = fm.ssn  -- More reliable than matching by email
+    JOIN Teams t ON t.head_coach_id = p.personnel_id
+    WHERE clh.end_date IS NULL
+    AND clh.location_id = :locId
+    AND t.location_id = :locId;
+    ";
 
     $stmt = $db->prepare($sql);
     $stmt->execute([':locId' => $locationId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 
 
