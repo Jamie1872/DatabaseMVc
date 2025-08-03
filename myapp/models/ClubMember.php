@@ -10,14 +10,14 @@ class ClubMember {
 
     public static function getEligibleMembersForTeam($team_id)
     {
-       $db = Database::connect();
+     $db = Database::connect();
 
     // First get team location id
-       $teamLocationStmt = $db->prepare("SELECT location_id FROM Teams WHERE team_id = ?");
-       $teamLocationStmt->execute([$team_id]);
-       $teamLocation = $teamLocationStmt->fetchColumn();
+     $teamLocationStmt = $db->prepare("SELECT location_id FROM Teams WHERE team_id = ?");
+     $teamLocationStmt->execute([$team_id]);
+     $teamLocation = $teamLocationStmt->fetchColumn();
 
-       if (!$teamLocation) {
+     if (!$teamLocation) {
         return []; // no team or no location for team
     }
 
@@ -33,17 +33,18 @@ class ClubMember {
             FROM Payments
             WHERE membership_year = ?
             GROUP BY club_member_id
-        ) pay ON cm.club_member_id = pay.club_member_id
+            ) pay ON cm.club_member_id = pay.club_member_id
         WHERE clh.location_id = ?
-          AND (clh.end_date IS NULL OR clh.end_date >= CURDATE())
-          AND clh.start_date <= CURDATE()
-          AND (
-              (cm.is_minor = 1 AND pay.total_paid >= 100)
-              OR
-              (cm.is_minor = 0 AND pay.total_paid >= 200)
-          )
+        AND (clh.end_date IS NULL OR clh.end_date >= CURDATE())
+        AND clh.start_date <= CURDATE()
+        AND (
+            (cm.is_minor = 1 AND IFNULL(pay.total_paid, 0) >= 100)
+            OR
+            (cm.is_minor = 0 AND IFNULL(pay.total_paid, 0) >= 200)
+        )
+
         ");
-        $stmt->execute([$teamLocation, $currentYear]);
+    $stmt->execute([$currentYear, $teamLocation]);
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -145,140 +146,140 @@ public static function delete($id) {
 
 
     #query 13
-    public static function getNeverAssignedMembers() {
-        $db = Database::connect();
-        $sql = " 
-        SELECT 
-            cm.club_member_id AS membership_number,
-            cm.first_name,
-            cm.last_name,
-            TIMESTAMPDIFF(YEAR, cm.date_of_birth, CURDATE()) AS age,
-            cm.phone_number,
-            cm.email,
-            l.name AS location_name
-        FROM ClubMembers cm, ClubMember_Location_History clh, Locations l
-        WHERE cm.club_member_id = clh.club_member_id
-              AND clh.location_id = l.location_id
-              AND (clh.end_date IS NULL OR clh.end_date > CURDATE())
-              AND cm.club_member_id NOT IN (
-                  SELECT club_member_id FROM TeamFormation
-              )
-              AND cm.club_member_id NOT IN (
-                  SELECT club_member_id FROM Session_Player_Assignment
-              )
-        ORDER BY location_name ASC, age ASC;
-        ";
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+public static function getNeverAssignedMembers() {
+    $db = Database::connect();
+    $sql = " 
+    SELECT 
+    cm.club_member_id AS membership_number,
+    cm.first_name,
+    cm.last_name,
+    TIMESTAMPDIFF(YEAR, cm.date_of_birth, CURDATE()) AS age,
+    cm.phone_number,
+    cm.email,
+    l.name AS location_name
+    FROM ClubMembers cm, ClubMember_Location_History clh, Locations l
+    WHERE cm.club_member_id = clh.club_member_id
+    AND clh.location_id = l.location_id
+    AND (clh.end_date IS NULL OR clh.end_date > CURDATE())
+    AND cm.club_member_id NOT IN (
+      SELECT club_member_id FROM TeamFormation
+      )
+    AND cm.club_member_id NOT IN (
+      SELECT club_member_id FROM Session_Player_Assignment
+      )
+    ORDER BY location_name ASC, age ASC;
+    ";
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     #query 14
-    public static function getActiveMembersJoinedAsMinors() {
-        $db = Database::connect();
-        $sql = " 
-        SELECT 
-            cm.club_member_id AS membership_number,
-            cm.first_name,
-            cm.last_name,
-            MIN(clh.start_date) AS date_of_joining,
-            TIMESTAMPDIFF(YEAR, cm.date_of_birth, CURDATE()) AS age,
-            cm.phone_number,
-            cm.email,
-            l.name AS location_name
-        FROM ClubMembers cm,
-            ClubMember_Location_History clh,
-            Locations l
-        WHERE cm.club_member_id = clh.club_member_id
-            AND clh.location_id = l.location_id
-            AND (clh.end_date IS NULL OR clh.end_date > CURDATE())
-        GROUP BY cm.club_member_id, cm.first_name, cm.last_name, cm.date_of_birth, cm.phone_number, cm.email, l.name
-        HAVING TIMESTAMPDIFF(YEAR, cm.date_of_birth, MIN(clh.start_date)) < 18
-            AND TIMESTAMPDIFF(YEAR, cm.date_of_birth, CURDATE()) >= 18
-        ORDER BY location_name ASC, age ASC;
-        ";
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+public static function getActiveMembersJoinedAsMinors() {
+    $db = Database::connect();
+    $sql = " 
+    SELECT 
+    cm.club_member_id AS membership_number,
+    cm.first_name,
+    cm.last_name,
+    MIN(clh.start_date) AS date_of_joining,
+    TIMESTAMPDIFF(YEAR, cm.date_of_birth, CURDATE()) AS age,
+    cm.phone_number,
+    cm.email,
+    l.name AS location_name
+    FROM ClubMembers cm,
+    ClubMember_Location_History clh,
+    Locations l
+    WHERE cm.club_member_id = clh.club_member_id
+    AND clh.location_id = l.location_id
+    AND (clh.end_date IS NULL OR clh.end_date > CURDATE())
+    GROUP BY cm.club_member_id, cm.first_name, cm.last_name, cm.date_of_birth, cm.phone_number, cm.email, l.name
+    HAVING TIMESTAMPDIFF(YEAR, cm.date_of_birth, MIN(clh.start_date)) < 18
+    AND TIMESTAMPDIFF(YEAR, cm.date_of_birth, CURDATE()) >= 18
+    ORDER BY location_name ASC, age ASC;
+    ";
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     #query 15
-    public static function getSetterOnlyPlayers() {
-        $db = Database::connect();
-        $sql = " 
-        SELECT 
-            cm.club_member_id AS membership_number,
-            cm.first_name,
-            cm.last_name,
-            TIMESTAMPDIFF(YEAR, cm.date_of_birth, CURDATE()) AS age,
-            cm.phone_number,
-            cm.email,
-            l.name AS location_name
-        FROM ClubMembers cm,
-            TeamFormation tf,
-            ClubMember_Location_History clh,
-            Locations l
-        WHERE cm.club_member_id = tf.club_member_id
-        AND cm.club_member_id = clh.club_member_id
-        AND clh.location_id = l.location_id
-        AND (clh.end_date IS NULL OR clh.end_date > CURDATE())
-        AND cm.club_member_id IN (
+public static function getSetterOnlyPlayers() {
+    $db = Database::connect();
+    $sql = " 
+    SELECT 
+    cm.club_member_id AS membership_number,
+    cm.first_name,
+    cm.last_name,
+    TIMESTAMPDIFF(YEAR, cm.date_of_birth, CURDATE()) AS age,
+    cm.phone_number,
+    cm.email,
+    l.name AS location_name
+    FROM ClubMembers cm,
+    TeamFormation tf,
+    ClubMember_Location_History clh,
+    Locations l
+    WHERE cm.club_member_id = tf.club_member_id
+    AND cm.club_member_id = clh.club_member_id
+    AND clh.location_id = l.location_id
+    AND (clh.end_date IS NULL OR clh.end_date > CURDATE())
+    AND cm.club_member_id IN (
             -- Must have at least one assignment as Setter
             SELECT club_member_id 
             FROM TeamFormation 
             WHERE position = 'Setter'
-        )
-        AND cm.club_member_id NOT IN (
+            )
+    AND cm.club_member_id NOT IN (
             -- Exclude anyone who was assigned a non-Setter position
             SELECT club_member_id 
             FROM TeamFormation 
             WHERE position <> 'Setter'
-        )
-        GROUP BY cm.club_member_id, cm.first_name, cm.last_name, cm.date_of_birth, cm.phone_number, cm.email, l.name
-        ORDER BY location_name ASC, cm.club_member_id ASC;
-        ";
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+            )
+    GROUP BY cm.club_member_id, cm.first_name, cm.last_name, cm.date_of_birth, cm.phone_number, cm.email, l.name
+    ORDER BY location_name ASC, cm.club_member_id ASC;
+    ";
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     #query 11
-    public static function getInactiveMembers(){
-        $db = Database::connect();
+public static function getInactiveMembers(){
+    $db = Database::connect();
 
-        $prevYear = date('Y') - 1;
+    $prevYear = date('Y') - 1;
 
-        $sql="  SELECT 
-                    cm.club_member_id,
-                    cm.first_name,
-                    cm.last_name
-                FROM 
-                    ClubMembers cm
-                JOIN 
-                    ClubMember_Location_History clh ON cm.club_member_id = clh.club_member_id
-                LEFT JOIN ( 
-                    SELECT club_member_id, SUM(amount_paid) AS total_paid
-                    FROM Payments
-                    WHERE membership_year = ?
-                    GROUP BY club_member_id
-                    ) pay ON cm.club_member_id = pay.club_member_id
-                GROUP BY 
-                    cm.club_member_id, cm.first_name, cm.last_name, cm.is_minor, pay.total_paid
-                HAVING 
-                    COUNT(DISTINCT clh.location_id) >= 2
-                    AND MIN(clh.start_date) <= DATE_SUB(CURDATE(), INTERVAL 2 YEAR)
-                    AND SUM(CASE WHEN clh.end_date IS NULL THEN 1 ELSE 0 END) = 0
-                    AND (
-                        (cm.is_minor = 1 AND (pay.total_paid IS NULL OR pay.total_paid < 100))
-                        OR
-                        (cm.is_minor = 0 AND (pay.total_paid IS NULL OR pay.total_paid < 200))
-                    )
-                ORDER BY 
-                    cm.club_member_id ASC;";
-        $stmt = $db->prepare($sql);
-        $stmt->execute([$prevYear]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    $sql="  SELECT 
+    cm.club_member_id,
+    cm.first_name,
+    cm.last_name
+    FROM 
+    ClubMembers cm
+    JOIN 
+    ClubMember_Location_History clh ON cm.club_member_id = clh.club_member_id
+    LEFT JOIN ( 
+        SELECT club_member_id, SUM(amount_paid) AS total_paid
+        FROM Payments
+        WHERE membership_year = ?
+        GROUP BY club_member_id
+        ) pay ON cm.club_member_id = pay.club_member_id
+    GROUP BY 
+    cm.club_member_id, cm.first_name, cm.last_name, cm.is_minor, pay.total_paid
+    HAVING 
+    COUNT(DISTINCT clh.location_id) >= 2
+    AND MIN(clh.start_date) <= DATE_SUB(CURDATE(), INTERVAL 2 YEAR)
+    AND SUM(CASE WHEN clh.end_date IS NULL THEN 1 ELSE 0 END) = 0
+    AND (
+        (cm.is_minor = 1 AND (pay.total_paid IS NULL OR pay.total_paid < 100))
+        OR
+        (cm.is_minor = 0 AND (pay.total_paid IS NULL OR pay.total_paid < 200))
+        )
+    ORDER BY 
+    cm.club_member_id ASC;";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([$prevYear]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     #query 16
 public static function getMembersWithAllRoles() {
