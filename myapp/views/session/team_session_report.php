@@ -1,4 +1,20 @@
+<?php
+// Get all locations for dropdown
+require_once __DIR__ . '/../../models/Location.php';
+$locations = Location::all();
+?>
+
 <h1>Team Session Formation Report by Location</h1>
+
+<label for="location_id">Location:</label>
+    <select name="location_id" id="location_id" required>
+        <option value="">Select location</option>
+        <?php foreach ($locations as $loc): ?>
+            <option value="<?= htmlspecialchars($loc['location_id']) ?>">
+                <?= htmlspecialchars($loc['name']) ?> (<?= htmlspecialchars($loc['city']) ?>)
+            </option>
+        <?php endforeach; ?>
+    </select><br><br>
 
 <form method="GET" action="index.php">
     <input type="hidden" name="action" value="team_session_report">
