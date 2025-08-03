@@ -1,7 +1,21 @@
+<?php
+require_once __DIR__ . '/../../models/ClubMember.php';
+$members = ClubMember::all();
+?>
+
 <h1>Add Payment for Club Member</h1>
 
 <form method="POST" action="index.php?action=submit_payment">
-    <label>Club Member ID: <input type="number" name="club_member_id" required></label><br><br>
+    <label>Club Member:
+        <select name="club_member_id" required>
+            <option value="">Select Member</option>
+            <?php foreach ($members as $member): ?>
+                <option value="<?= $member['club_member_id'] ?>">
+                    <?= htmlspecialchars($member['club_member_id'] . ' - ' . $member['first_name'] . ' ' . $member['last_name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </label> <br><br>
     <label>Payment Date: <input type="date" name="payment_date" required></label><br><br>
     <label>Membership Year: <input type="number" name="membership_year" min="2000" required></label><br><br>
     <label>Amount Paid: <input type="number" step="0.01" name="amount_paid" required></label><br><br>
