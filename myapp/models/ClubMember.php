@@ -280,44 +280,50 @@ public static function getInactiveMembers(){
     $stmt->execute([$prevYear]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
-    #query 16
+#query 16
 public static function getMembersWithAllRoles() {
     $db = Database::connect();
     $sql = "
-    SELECT 
-    cm.club_member_id,
-    cm.first_name,
-    cm.last_name,
-    TIMESTAMPDIFF(YEAR, cm.date_of_birth, CURDATE()) AS age,
-    cm.phone_number,
-    cm.email,
-    l.name AS location_name
-    FROM 
-    ClubMembers cm,
-    Session_Player_Assignment spa,
-    ClubMember_Location_History clh,
-    Locations l
-    WHERE 
-    cm.club_member_id = spa.club_member_id
-    AND cm.club_member_id = clh.club_member_id
-    AND clh.end_date IS NULL
-    AND clh.location_id = l.location_id
-    GROUP BY 
-    cm.club_member_id
-    HAVING 
-    SUM(spa.role = 'Goalkeeper') > 0
-    AND SUM(spa.role = 'Defender') > 0
-    AND SUM(spa.role = 'Midfielder') > 0
-    AND SUM(spa.role = 'Forward') > 0
-    ORDER BY 
-    location_name ASC,
-    cm.club_member_id ASC
+        SELECT 
+            cm.club_member_id,
+            cm.first_name,
+            cm.last_name,
+            TIMESTAMPDIFF(YEAR, cm.date_of_birth, CURDATE()) AS age,
+            cm.phone_number,
+            cm.email,
+            l.name AS location_name
+        FROM 
+            ClubMembers cm
+        JOIN Session_Player_Assignment spa ON cm.club_member_id = spa.club_member_id
+        JOIN Sessions s ON spa.session_id = s.session_id
+        JOIN ClubMember_Location_History clh ON cm.club_member_id = clh.club_member_id AND clh.end_date IS NULL
+        JOIN Locations l ON clh.location_id = l.location_id
+        WHERE 
+            s.session_type = 'Game'
+            AND EXISTS (
+                SELECT 1 FROM Payments p 
+                WHERE p.club_member_id = cm.club_member_id 
+                  AND p.membership_year = YEAR(CURDATE())
+            )
+        GROUP BY 
+            cm.club_member_id
+        HAVING 
+            COUNT(DISTINCT CASE WHEN spa.role = 'Setter' THEN spa.role END) > 0 AND
+            COUNT(DISTINCT CASE WHEN spa.role = 'Outside Hitter' THEN spa.role END) > 0 AND
+            COUNT(DISTINCT CASE WHEN spa.role = 'Opposite Hitter' THEN spa.role END) > 0 AND
+            COUNT(DISTINCT CASE WHEN spa.role = 'Middle Blocker' THEN spa.role END) > 0 AND
+            COUNT(DISTINCT CASE WHEN spa.role = 'Defensive Specialist' THEN spa.role END) > 0 AND
+            COUNT(DISTINCT CASE WHEN spa.role = 'Libero' THEN spa.role END) > 0
+        ORDER BY 
+            location_name ASC,
+            cm.club_member_id ASC;
     ";
     $stmt = $db->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
 
     #query 18
 public static function getUndefeatedActiveMembers() {

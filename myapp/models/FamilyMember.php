@@ -58,37 +58,28 @@ class FamilyMember {
     }
 
     #query 17
-    public static function getFamilyMembersWhoAreHeadCoachesOfTheirChildrenLocation() {
+ public static function getHeadCoachFamilyMembersByLocation($locationId) {
     $db = Database::connect();
+
     $sql = "
-        SELECT DISTINCT
-            fm.first_name,
-            fm.last_name,
-            fm.phone_number
-        FROM 
-            FamilyMembers fm,
-            ClubMember_Family_Association cmfa,
-            ClubMembers cm,
-            ClubMember_Location_History cmh,
-            Teams t,
-            Personnel p,
-            Personnel_Location_History plh
-        WHERE 
-            fm.family_member_id = cmfa.family_member_id
-            AND cmfa.club_member_id = cm.club_member_id
-            AND cm.club_member_id = cmh.club_member_id
-            AND cmh.end_date IS NULL
-            AND p.ssn = fm.ssn
-            AND t.head_coach_id = p.personnel_id
-            AND t.location_id = cmh.location_id
-            AND plh.personnel_id = p.personnel_id
-            AND plh.location_id = cmh.location_id
-            AND plh.end_date IS NULL
+        SELECT DISTINCT fm.first_name, fm.last_name, fm.phone_number
+    FROM FamilyMembers fm
+    JOIN ClubMember_Family_Association cmfa ON fm.family_member_id = cmfa.family_member_id
+    JOIN ClubMember_Location_History clh ON cmfa.club_member_id = clh.club_member_id
+    JOIN Personnel p ON p.ssn = fm.ssn  -- More reliable than matching by email
+    JOIN Teams t ON t.head_coach_id = p.personnel_id
+    WHERE clh.end_date IS NULL
+    AND clh.location_id = :locId
+    AND t.location_id = :locId;
     ";
+
     $stmt = $db->prepare($sql);
-    $stmt->execute();
+    $stmt->execute([':locId' => $locationId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
+
 
     public static function getAssociatedMembers($id) {
         $db = Database::connect();
